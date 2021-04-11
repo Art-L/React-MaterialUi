@@ -19,19 +19,6 @@ export default function BasicExample() {
     <Router>
       <div>
         <Header />
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/phones">Phones</Link>
-          </li>
-          <li>
-            <Link to="/phones/samsung">Phone tests</Link>
-          </li>
-        </ul>
-
-        <hr />
 
         {/*
           A <Switch> looks through all its children <Route>
@@ -62,7 +49,7 @@ export default function BasicExample() {
 function Home() {
   return (
     <div>
-      <App />
+   
     </div>
   );
 }

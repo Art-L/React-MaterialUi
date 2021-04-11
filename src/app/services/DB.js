@@ -1,10 +1,10 @@
-import localForage from 'localforage';
-import { SHA256 } from 'sha2';
+import localForage from "localforage";
+import { SHA256 } from "sha2";
 
 class DB {
   constructor() {
     this.store = localForage.createInstance({
-      name: 'TELIA_store',
+      name: "TELIA_store",
     });
   }
 
@@ -34,12 +34,10 @@ class DB {
     }
   }
 
-  _expirationKey = key => {
-    const hash = SHA256(key)
-      .toString('hex')
-      .substring(0, 8);
+  _expirationKey = (key) => {
+    const hash = SHA256(key).toString("hex").substring(0, 8);
 
-    return `${key}_expires_${hash}` ;
+    return `${key}_expires_${hash}`;
   };
 
   removeItem(key) {

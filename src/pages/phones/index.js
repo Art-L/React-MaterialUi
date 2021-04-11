@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import { get, cloneDeep } from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import HomeIcon from "@material-ui/icons/Home";
 import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
@@ -36,7 +32,7 @@ class phonesIndexPage extends Component {
       phonesResult: [],
       isloading: true,
       noResults: false,
-      favorites: []
+      favorites: [],
     };
   }
 
@@ -51,7 +47,7 @@ class phonesIndexPage extends Component {
     }
   };
 
-//TODO add lazyload hook on Grid
+  //TODO add lazyload hook on Grid
   addMorePhones = (phonesResponse) => {
     const statePhones = cloneDeep(get(this.state, "phonesResult") || []);
     const brandId = get(this.state, "brandId") || "";
@@ -64,48 +60,48 @@ class phonesIndexPage extends Component {
     apiCalls.getPhones((phonesResult) => this.setPhones(phonesResult));
   };
 
-  //Workaround since functionalComponent cant access router 
-  redirect = (redirectUrl)=>{
-    this.props.history.push(redirectUrl)
-  }
+  //Workaround since functionalComponent cant access router
+  redirect = (redirectUrl) => {
+    this.props.history.push(redirectUrl);
+  };
 
-  getFavoritesList= async()=>{
-    const favorites = (await DB.getItem('favorites'))||[]
-    if(favorites.length){
-      this.setState({favorites})
+  getFavoritesList = async () => {
+    const favorites = (await DB.getItem("favorites")) || [];
+    if (favorites.length) {
+      this.setState({ favorites });
     }
-  }
+  };
 
-  addFavorite = id =>{
-    const favorites = get(this.state,'favorites',[]);
-    favorites.push(id)
-    DB.setItem('favorites',favorites)
-    this.setState({favorites})
-  }
+  addFavorite = (id) => {
+    const favorites = get(this.state, "favorites", []);
+    favorites.push(id);
+    DB.setItem("favorites", favorites);
+    this.setState({ favorites });
+  };
 
-  removeFavorite = id =>{
-    let favorites = get(this.state,'favorites',[]);
-    favorites=favorites.filter(favorite =>favorite.toLowerCase() !== id.toLowerCase())
-    DB.setItem('favorites',favorites)
-    this.setState({favorites})
-  }
-
+  removeFavorite = (id) => {
+    let favorites = get(this.state, "favorites", []);
+    favorites = favorites.filter(
+      (favorite) => favorite.toLowerCase() !== id.toLowerCase()
+    );
+    DB.setItem("favorites", favorites);
+    this.setState({ favorites });
+  };
 
   componentDidMount() {
     this.getPhones();
-    this.getFavoritesList()
+    this.getFavoritesList();
   }
 
+  redirect = (redirectUrl) => {
+    const newWindow = window.open(redirectUrl, "_blank", "noopener,noreferrer");
+    if (newWindow) newWindow.opener = null;
+  };
 
-  redirect = (redirectUrl)=>{
-    const newWindow = window.open(redirectUrl, '_blank', 'noopener,noreferrer')
-    if (newWindow) newWindow.opener = null
-  }
-
-  isFavorite = (id)=>{
-    const favorites = get(this.state,'favorites',[]);
+  isFavorite = (id) => {
+    const favorites = get(this.state, "favorites", []);
     return favorites.includes(id.toLowerCase());
-  }
+  };
 
   render() {
     const { classes } = this.props;
@@ -114,25 +110,28 @@ class phonesIndexPage extends Component {
     const phonesResult = get(this.state, "phonesResult");
     return (
       <div className={classes.root}>
-        {isLoading ? <CircularProgress /> : <h2>Phones:{brandId}</h2>}
-        <Grid container spacing={3}>
-          {phonesResult.map((phone) => {
-            return (
-              <Grid item xs={12} sm={6}>
-                <PhoneCard
-                  imageUrl={phone.imgUrl}
-                  description={phone.displayName}
-                  id={phone.contentKey}
-                  enableFavorites
-                  redirect={()=>this.redirect(phone.link)}
-                  addFavorite={()=>this.addFavorite(phone.contentKey)}
-                  removeFavorite={()=>this.removeFavorite(phone.contentKey)}
-                  isFavorite={this.isFavorite(phone.contentKey)}
-                />
-              </Grid>
-            );
-          })}
-        </Grid>
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <Grid container spacing={3}>
+            {phonesResult.map((phone) => {
+              return (
+                <Grid item xs={12} sm={6}>
+                  <PhoneCard
+                    imageUrl={phone.imgUrl}
+                    description={phone.displayName}
+                    id={phone.contentKey}
+                    enableFavorites
+                    redirect={() => this.redirect(phone.link)}
+                    addFavorite={() => this.addFavorite(phone.contentKey)}
+                    removeFavorite={() => this.removeFavorite(phone.contentKey)}
+                    isFavorite={this.isFavorite(phone.contentKey)}
+                  />
+                </Grid>
+              );
+            })}
+          </Grid>
+        )}
       </div>
     );
   }

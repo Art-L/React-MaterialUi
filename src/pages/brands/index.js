@@ -13,10 +13,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import PhoneCard from "../../Components/PhoneCard/phoneCard";
 import Grid from "@material-ui/core/Grid";
 const useStyles = makeStyles((theme) => ({
-  brandsPage: {
-  
-  },
-
+  brandsPage: {},
 }));
 
 class brandsIndexPage extends Component {
@@ -47,33 +44,39 @@ class brandsIndexPage extends Component {
     this.setState({ isLoading: true });
     apiCalls.getBrands((phoneBrands) => this.setBrands(phoneBrands));
   };
-  redirect = (redirectUrl)=>{
-    this.props.history.push(redirectUrl)
-  }
+  redirect = (redirectUrl) => {
+    this.props.history.push(redirectUrl);
+  };
   componentDidMount() {
     this.getPhoneBrands();
   }
 
   render() {
-    const {isLoading} = this.state
+    const { isLoading } = this.state;
     const { classes } = this.props;
     const phoneBrands = get(this.state, "phoneBrands");
-    return <div  className={classes.brandsPage} >{isLoading ? (<CircularProgress/>):(<h2>Brands</h2>)}
-            <Grid container spacing={3}>
-          {phoneBrands.map((brand) => {
-            return (
-              <Grid item xs={12} sm={6}>
-                <PhoneCard
-                  imageUrl={brand.displayImageUrl}
-                  description={brand.displayName}
-                  id={brand.id}
-                  redirect={()=>this.redirect('/phones/'+brand.id)}
-                />
-              </Grid>
-            );
-          })}
-        </Grid>
-    </div>;
+    return (
+      <div className={classes.brandsPage}>
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <Grid container spacing={3}>
+            {phoneBrands.map((brand) => {
+              return (
+                <Grid item xs={12} sm={6}>
+                  <PhoneCard
+                    imageUrl={brand.displayImageUrl}
+                    description={brand.displayName}
+                    id={brand.id}
+                    redirect={() => this.redirect("/phones/" + brand.id)}
+                  />
+                </Grid>
+              );
+            })}
+          </Grid>
+        )}
+      </div>
+    );
   }
 }
 
