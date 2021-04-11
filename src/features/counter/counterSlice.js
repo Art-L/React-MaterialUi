@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { fetchCount } from './counterAPI';
+import apiCalls from '../../app/services/apiCalls'
 
 const initialState = {
   value: 0,
@@ -26,6 +27,8 @@ export const counterSlice = createSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     increment: (state) => {
+      // apiCalls.getBrands();
+      // apiCalls.getPhones(;)
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
